@@ -2,8 +2,6 @@
 
 ## Sobre o Repositório
 
-Este repositório é um espaço pessoal dedicado ao armazenamento e organização dos códigos e algoritmos que desenvolvo durante o curso de graduação na Universidade Federal Rural do Semi-Árido (UFERSA). O principal objetivo é ter um portfólio de estudo para fixar os conceitos de programação e estruturas de dados aprendidos em sala de aula.
-
 Aqui você encontrará implementações de funções, exercícios e projetos focados em:
 
 * **Estruturas de Dados**: Listas, pilhas, filas, árvores, entre outras.
