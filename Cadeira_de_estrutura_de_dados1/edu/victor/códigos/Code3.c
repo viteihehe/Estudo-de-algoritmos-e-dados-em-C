@@ -2,24 +2,24 @@
 #include <stdlib.h>
 
 int main() {
-    int n;
+    int quantidade;
 
     printf("Insira o tanto de valores lidos: \n");
-    scanf("%d", &n);
+    scanf("%d", &quantidade);
 
-    int *pn = (int *) malloc(n * sizeof(int));
+    int *pquantidade = (int *) malloc(quantidade * sizeof(int));
 
 
     for(int i = 0; i < n; i++) {
         printf("Insira o %d numero:\n", i+1);
-        scanf("%d", pn+i);
+        scanf("%d", pquantidade+i);
     }
 
     int menor = *pn;
     int posicao = 0;
 
     for(int i = 0; i < n; i++) {
-        if(*(pn + i) < menor) {
+        if(*(pquantidade + i) < menor) {
             menor = *(pn + i);
             posicao = i;
         }
