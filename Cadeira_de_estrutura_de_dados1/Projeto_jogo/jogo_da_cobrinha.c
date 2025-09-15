@@ -49,6 +49,7 @@ int erro(bool teste) {
 bool colisao(Fruta fruta, Cobra cobra);
 
 int main() {
+	int pontos = 0;
 	int i;
 	bool colidir = false;
 	cobra.tamanho = 1;
@@ -58,7 +59,8 @@ int main() {
 	bool fruta_existe = false;
 	srand(time(NULL));
 	int fps = 10;
-	bool teclas[] = { false, false, false, false };
+	//bool teclas[] = { false, false, false, false };
+	int movimento = 5;
 	bool fim = false;
 	ALLEGRO_EVENT_QUEUE* fila_eventos = NULL;
 	ALLEGRO_DISPLAY* display = NULL;
@@ -112,6 +114,25 @@ int main() {
 
 		if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
 			switch (ev.keyboard.keycode) {
+				case ALLEGRO_KEY_UP:
+					movimento = CIMA;
+					break;
+				case ALLEGRO_KEY_DOWN:
+					movimento = BAIXO;
+					break;
+				case ALLEGRO_KEY_RIGHT:
+					movimento = DIREITA;
+					break;
+				case ALLEGRO_KEY_LEFT:
+					movimento = ESQUERDA;
+					break;
+				default:
+					break;
+			}
+		}
+
+		/*if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+			switch (ev.keyboard.keycode) {
 			case ALLEGRO_KEY_UP:
 				teclas[CIMA] = true;
 				break;
@@ -145,11 +166,11 @@ int main() {
 				teclas[DIREITA] = false;
 				break;
 			}
-		}
+		}*/
 
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
 
-			// <- A lógica de geração da fruta é movida para dentro do timer.
+		
 			if (!fruta_existe) {
 				fruta.pos_x = (rand() % 620);
 				fruta.pos_y = (rand() % 460);
@@ -162,6 +183,19 @@ int main() {
 				cobra.corpo[i] = cobra.corpo[i - 1];
 			}
 
+			if (movimento == CIMA) {
+				cobra.corpo[0].py -= 30;
+			}
+			else if (movimento == BAIXO) {
+				cobra.corpo[0].py += 30;
+			}
+			else if (movimento == DIREITA) {
+				cobra.corpo[0].px += 30;
+			}
+			else if (movimento == ESQUERDA) {
+				cobra.corpo[0].px -= 30;
+			}
+			/*
 			if (teclas[CIMA]) {
 				cobra.corpo[0].py -= 30;
 			}
@@ -176,18 +210,19 @@ int main() {
 			else if (teclas[DIREITA]) {
 				cobra.corpo[0].px += 30;
 			}
-
+*/
 
 			if (colisao(fruta, cobra)) {
 				cobra.tamanho++;
 				cobra.corpo = (Segmento*)realloc(cobra.corpo, cobra.tamanho * sizeof(Segmento));
-				// <- A flag é definida como falsa apenas aqui, para que a fruta seja recriada no próximo loop.
+				pontos += 10;
 				fruta_existe = false;
 			}
 
 			// Desenho
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_draw_filled_circle(fruta.pos_x, fruta.pos_y, fruta.raio, al_map_rgb(255, 0, 0));
+			al_draw_textf(font20, al_map_rgb(255,255,255), LARGURA-100, ALTURA -450, ALLEGRO_ALIGN_CENTER, "PONTOS: %d", pontos);
 			for (i = 0; i < cobra.tamanho; i++) {
 				al_draw_filled_rectangle(cobra.corpo[i].px, cobra.corpo[i].py, cobra.corpo[i].px + 30, cobra.corpo[i].py + 30, al_map_rgb(0, 255, 0));
 			}
