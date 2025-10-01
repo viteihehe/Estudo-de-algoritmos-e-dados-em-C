@@ -18,5 +18,5 @@ int main() {
 }
 
 void aplicar_powerup_pontuacao_dupla(int *ppontuacao_jogador){
-    *pontuacao_jogador = 2 * *pontuacao_jogador;
+    *ppontuacao_jogador = 2 * *(ppontuacao_jogador);
 }
