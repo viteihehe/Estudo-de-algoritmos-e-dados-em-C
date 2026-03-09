@@ -28,7 +28,7 @@ int main() {
     printf("Insira o raio de explosao:\n");
     scanf("%f", &raio);
     int contador = 0;
-
+    
     for(int i = 0; i < n-1; i++) {
         for(int j = i+1; j < n; j++) {
             float distancia = sqrt(pow(u[j].x - u[i].x, 2) + pow(u[j].y - u[i].y, 2));

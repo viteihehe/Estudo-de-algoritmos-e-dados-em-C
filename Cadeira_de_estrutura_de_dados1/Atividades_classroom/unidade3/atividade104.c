@@ -35,8 +35,9 @@ void menu() {
     printf("1: Adicionar um novo feitico a pilha de comandos\n");
     printf("2: Lancar Proximo Feitico\n");
     printf("3: Mostrar Pilha de Comandos\n");
-    printf("4: Vetificar Status da Pilha\n");
-    printf("5: Finalizar a sequencia de comando e sair\n");
+    printf("4: Consultar proximo feitico\n");
+    printf("5: Vetificar Status da Pilha\n");
+    printf("6: Finalizar a sequencia de comando e sair\n");
     printf("==========================================\n");
 }
 
@@ -88,6 +89,18 @@ void liberar_pilha(Pilha *p) {
     }
 }
 
+Feitico top(Pilha p) {
+    if(!vazia(&p)) {
+        return p.topo->dado;
+    }else {
+        Feitico f;
+        f.custo_mana = -1;
+        char erro [5] = {'E', 'R' ,'R', 'O', '\0'};
+        strcpy(f.nome, erro);
+        return f;
+    }
+}
+
 int main() {
     Pilha pilha;
     pilha.topo = NULL;
@@ -111,13 +124,17 @@ int main() {
                 mostrar(pilha);
                 break;
             case 4:
+                f = top(pilha);
+                printf("Topo: %s, Custo de mana: %d\n", f.nome, f.custo_mana);
+                break;
+            case 5:
                 if(vazia(&pilha)) {
                     printf("Vazia!\n");
                 }else {
                     printf("Nao esta vazia!\n");
                 }
                 break;
-            case 5:
+            case 6:
                 liberar_pilha(&pilha);
                 op = 0;
                 break;

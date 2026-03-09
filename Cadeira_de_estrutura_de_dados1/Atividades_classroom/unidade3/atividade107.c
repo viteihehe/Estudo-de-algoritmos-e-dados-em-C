@@ -35,8 +35,11 @@ void menu() {
     printf("1: Adicionar um novo feitico a pilha de comandos\n");
     printf("2: Lancar Proximo Feitico\n");
     printf("3: Mostrar Pilha de Comandos\n");
-    printf("4: Vetificar Status da Pilha\n");
-    printf("5: Finalizar a sequencia de comando e sair\n");
+    printf("4: Consultar proximo feitico\n");
+    printf("5: Salvar sequencia no grimorio\n");
+    printf("6: Vetificar Status da Pilha\n");
+    printf("7: Inverter ordem dos feiticos\n");
+    printf("8: Finalizar a sequencia de comando e sair\n");
     printf("==========================================\n");
 }
 
@@ -88,11 +91,74 @@ void liberar_pilha(Pilha *p) {
     }
 }
 
+Feitico top(Pilha p) {
+    if(!vazia(&p)) {
+        return p.topo->dado;
+    }else {
+        Feitico f;
+        f.custo_mana = -1;
+        char erro [5] = {'E', 'R' ,'R', 'O', '\0'};
+        strcpy(f.nome, erro);
+        return f;
+    }
+}
+
+void inverter_pilha(Pilha *p) {
+    if(!vazia(p)) {
+        Pilha aux;
+        aux.topo = NULL;
+        No * temp;
+        for(temp = p->topo; temp != NULL; temp = p->topo) {
+            push(&aux, temp->dado);
+            pop(p);
+        }
+        p->topo = aux.topo;
+    }else {
+        printf("Nao a nada para inverter\n");
+    }
+}
+
+void salvar_pilha_em_arquivo(Pilha *p, const char* nome_arquivo) {
+   if(!vazia(p)) {
+    FILE* file = fopen(nome_arquivo, "wb");
+    No * temp;
+    for(temp = p->topo; temp != NULL; temp = temp->prox) {
+        fwrite(&temp->dado, sizeof(Feitico), 1, file);
+    }
+    fclose(file);
+    printf("Arquivo salvo com sucesso\n");
+   }else {
+    printf("Nao a nada para salvar\n");
+   }
+}
+
+void carregar_pilha_de_arquivo(Pilha *p, const char* nome_arquivo) {
+    FILE *file = fopen(nome_arquivo, "rb");
+    if(file == NULL) {
+        printf("Nenhum grimorio encontrado, iniciando com uma pilha vazia\n");
+        return;
+    }else {
+    Pilha aux;
+    aux.topo = NULL;
+    Feitico f;
+    while(fread(&f, sizeof(Feitico), 1, file)) {
+        push(&aux, f);
+    }
+    inverter_pilha(&aux);
+    p->topo = aux.topo;
+    }
+    fclose(file);
+}
+
+
 int main() {
     Pilha pilha;
     pilha.topo = NULL;
     Feitico f;
     int op = 1;
+    char nome_arquivo [50] = {""};
+    strcat(nome_arquivo, "grimorio.bin");
+    carregar_pilha_de_arquivo(&pilha, nome_arquivo);
 
     while(op) {
         menu();
@@ -111,13 +177,26 @@ int main() {
                 mostrar(pilha);
                 break;
             case 4:
+                f = top(pilha);
+                printf("Topo: %s, Custo de mana: %d\n", f.nome, f.custo_mana);
+                break;
+            case 5:
+                salvar_pilha_em_arquivo(&pilha, nome_arquivo);
+                break;
+            case 6:
                 if(vazia(&pilha)) {
                     printf("Vazia!\n");
                 }else {
                     printf("Nao esta vazia!\n");
                 }
                 break;
-            case 5:
+            case 7:
+                inverter_pilha(&pilha);
+                if(!vazia(&pilha)) {
+                    printf("Ordem dos feiticos invertida!\n");
+                }
+                break;
+            case 8:
                 liberar_pilha(&pilha);
                 op = 0;
                 break;

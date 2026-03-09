@@ -7,11 +7,11 @@ int main() {
 
         for(int i = 0; i < 5; i++) {
             printf("Insira o %dº item:\n", i+1);
-            scanf("%[^\n]s", inventario + i);
+            scanf(" %[^\n]s", inventario + i);
             getchar();
         }
         printf("Insira o item necessario para abrir a porta:\n");
-        scanf("%[^\n]s", temp);
+        scanf(" %[^\n]s", temp);
 
         for(int i = 0; i < 5; i++) {
             if(strcmp(inventario[i], temp) == 0){
