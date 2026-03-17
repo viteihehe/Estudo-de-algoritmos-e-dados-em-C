@@ -22,7 +22,7 @@ int main() {
     int n [] = {1, 1, 1, 1, 1};
     int tam = sizeof(n)/sizeof(n[0]);
     int x = soma(n, tam);
-
+    
     printf("%d", x);
 
     return 0;

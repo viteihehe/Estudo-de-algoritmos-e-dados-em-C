@@ -18,6 +18,7 @@ int main() {
 
     int x = soma(3);
 
-    printf("%d", x);
+    printf("%d\n", x); 
+    
 
 }
